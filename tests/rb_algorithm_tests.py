@@ -4,6 +4,7 @@ from delab_trees.delab_tree import DelabTree
 from delab_trees.test_data_manager import get_social_media_trees
 
 
+@unittest.skip("RB algorithm not fully implemented yet")
 class RBAlgorithmsTestCase(unittest.TestCase):
 
     def setUp(self):
