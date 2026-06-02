@@ -102,9 +102,26 @@ def get_social_media_trees(platform="twitter", n=None, context="production") -> 
     df = pd.read_pickle(file)
     df["post_id"] = df["post_id"].astype(str)
     df["parent_id"] = df["parent_id"].astype(str)
-    manager = TreeManager(df, n=n)
-    manager.remove_invalid()
-    return manager
+
+    if n is None:
+        manager = TreeManager(df)
+        manager.remove_invalid()
+        return manager
+
+    # n is the number of *valid* trees wanted. The bundled pickle has trees that
+    # fail validate() (orphans, multiple roots, etc.), so taking the first n raw
+    # groups and then dropping invalid ones often returns fewer than n. Scan
+    # groups in order, validate each, keep the first n that pass.
+    valid_trees = {}
+    for tree_id, group_df in df.groupby("tree_id"):
+        tree = DelabTree(group_df)
+        if tree.validate(verbose=False):
+            valid_trees[tree_id] = tree
+            if len(valid_trees) >= n:
+                break
+    kept_ids = list(valid_trees.keys())
+    sub_df = df[df["tree_id"].isin(kept_ids)]
+    return TreeManager(sub_df, trees=valid_trees)
 
 
 def get_example_conversation_tree(lang="en"):
