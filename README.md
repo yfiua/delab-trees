@@ -4,7 +4,8 @@ A library to analyze conversation trees.
 
 ## Installation 
 
-pip install delab_trees
+-  install python version 3.9
+-  pip install delab_trees
 
 ## Learning Resource
 
