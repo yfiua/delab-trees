@@ -27,7 +27,8 @@ exposes both a tabular (`pandas.DataFrame`) and a graph (`networkx.DiGraph`)
 representation of that conversation, and provides a uniform API for: validating tree
 structure, extracting *conversation flows* (root-to-leaf paths through the reply
 graph), computing author-centrality metrics, comparing flows by quantitative content
-features, and training simple neural models for participation-aware author scoring.
+features, and (experimentally) training simple neural models for participation-aware
+author scoring.
 The library is designed to operate on a single shared input schema (`tree_id`,
 `post_id`, `parent_id`, `author_id`, `text`, `created_at`) so that data drawn from
 different platforms can be analysed with identical code paths.
@@ -67,11 +68,14 @@ and participation at that granularity.
 - `FlowDuo`, a routine for finding the two flows within a conversation with the
   largest contrast on a chosen content metric (e.g. sentiment) — useful for selecting
   illustrative cases or constructing matched comparisons.
-- Two participation-aware author-scoring models that go beyond raw centrality:
-  a *response-based* (RB) classifier that learns whether an author has likely seen a
-  post from reply-distance features, and a *prediction-based* (PB) model that scores
-  authors by their predictability as the next contributor given conversation context
-  [@Dehne2023cccp].
+- Experimental, participation-aware author-scoring models that aim to go beyond raw
+  centrality: a *response-based* (RB) classifier that learns whether an author has
+  likely seen a post from reply-distance features, and a *prediction-based* (PB) model
+  that scores authors by their predictability as the next contributor given
+  conversation context [@Dehne2023cccp]. These two models are provided as a research
+  prototype and are still under active development; the stable, tested core of the
+  library is the reply-tree representation, conversation-flow extraction, `FlowDuo`,
+  and the centrality metrics described above.
 
 # Use cases
 
