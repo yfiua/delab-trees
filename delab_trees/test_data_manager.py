@@ -102,6 +102,7 @@ def get_social_media_trees(platform="twitter", n=None, context="production") -> 
     df = pd.read_pickle(file)
     df["post_id"] = df["post_id"].astype(str)
     df["parent_id"] = df["parent_id"].astype(str)
+    df["sentiment"] = n = random.randint(1, 100)
 
     if n is None:
         manager = TreeManager(df)
